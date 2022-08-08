@@ -1,0 +1,7 @@
+name: DraimFarming
+version: '${version}'
+main: net.draimcido.draimfarming.Main
+api-version: 1.19
+authors: [ DraimGooSe ]
+description: Уникальная система фермерства для проекта DraimCiDo
+website: https://dev.draimcido.net
