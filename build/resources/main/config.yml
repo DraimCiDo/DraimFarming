@@ -1,14 +1,10 @@
 #Don't change
 config-version: '4'
 
-#Want to sell the crops?
-#Try this plugin: https://www.spigotmc.org/resources/shipping-bin.104591/
-#You can use it with a command binding to an ItemsAdder furniture
-#Shipping Bin is similar to the way how players sell items in Stardrew Valley
 
 config:
-  # lang: english / spanish / chinese
-  lang: english
+  # lang: english / russian
+  lang: russian
 
 
   # mode: tripwire / item_frame
@@ -61,7 +57,6 @@ config:
     #integration to add players' farming skill xp
     AureliumSkills: false
     mcMMO: false
-    MMOCore: false
     EcoSkills: false
     #integration to sync seasons
     RealisticSeasons: false

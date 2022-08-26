@@ -7,17 +7,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
 
-/**
- * Provides access to {@link URLClassLoader}#addURL.
- */
 public abstract class URLClassLoaderAccess {
 
-    /**
-     * Creates a {@link URLClassLoaderAccess} for the given class loader.
-     *
-     * @param classLoader the class loader
-     * @return the access object
-     */
     static URLClassLoaderAccess create(URLClassLoader classLoader) {
         if (Unsafe.isSupported()) {
             return new Unsafe(classLoader);
@@ -33,18 +24,8 @@ public abstract class URLClassLoaderAccess {
     }
 
 
-    /**
-     * Adds the given URL to the class loader.
-     *
-     * @param url the URL to add
-     */
     public abstract void addURL(@NotNull URL url);
 
-    /**
-     * Accesses using sun.misc.Unsafe, supported on Java 9+.
-     *
-     * @author Vaishnav Anil (https://github.com/slimjar/slimjar)
-     */
     private static class Unsafe extends URLClassLoaderAccess {
         private static final sun.misc.Unsafe UNSAFE;
 

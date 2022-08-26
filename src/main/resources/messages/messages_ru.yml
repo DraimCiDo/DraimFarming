@@ -1,57 +1,56 @@
 #MiniMessage Format
 #https://docs.adventure.kyori.net/minimessage/format.html
 messages:
-  prefix: '<gradient:#ff206c:#fdee55>[CustomCrops] </gradient>'
-  reload: '<white>Reloaded! Took <green>{time}ms'
-  no-perm: '<red>No Permission!'
-  lack-args: '<white>Arguments are insufficient!'
-  wrong-args: '<white>Wrong Args!'
-  spring: 'Spring'
-  summer: 'Summer'
-  autumn: 'Autumn'
-  winter: 'Winter'
-  sprinkler-limit: '<white>Sprinklers have reached chunk limitation {max}'
-  crop-limit: '<white>Crops have reached chunk limitation {max}'
-  not-configed: '<white>This seed is not configurated in config!'
-  bad-Y: '<white>This height is not suitable for planting!'
-  bad-biome: '<white>This biome is not suitable for planting!'
-  bad-perm: '<white>You don''t have permission to plant this crop!'
-  bad-world: '<white>This world is not suitable for planting'
-  bad-season: '<white>Current season is not suitable for planting'
-  force-grow: '<white>Forced {world}''s crops to start growing!'
-  force-water: '<white>Forced {world}''s sprinklers to start working!'
-  force-save: '<white>Successfully saved cache to file!'
-  back-up: '<white>Backed up!'
-  set-season: '<white>Changed {world}''s season to {season}!'
-  before-plant: '<white>This fertilizer must be used befored planting!'
-  no-season: 'Season Disabled'
+  prefix: '<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>'
+  reload: 'Перезапущен! Заняло <green>{time}мс'
+  no-perm: 'Нету прав!'
+  lack-args: 'Аргументов недостаточно!'
+  wrong-args: 'Неправильные Аргументы!'
+  spring: 'Весна'
+  summer: 'Лето'
+  autumn: 'Осень'
+  winter: 'Зима'
+  sprinkler-limit: 'Разбрызгиватели достигли ограничения по чанкам, максимально {max}'
+  crop-limit: 'Посевы достигли ограничения по чанкам, максимально {max}'
+  not-configed: 'Эти семена не настроены в конфигурации!'
+  bad-Y: 'Эта высота не подходит для посадки!'
+  bad-biome: 'Этот биом не подходит для посадки!'
+  bad-perm: 'У вас нет разрешения на посадку этих семян'
+  bad-world: 'Этот мир не подходит для посадки'
+  bad-season: 'Текущий сезон не подходит для посадки'
+  force-grow: 'В мире {world} принудительно начали расти семена!'
+  force-water: 'В мире {world} принудительно все разбрызгиватели включены!'
+  force-save: 'Успешно сохранен кэш в файл!'
+  back-up: 'Резервное копирование успешно!'
+  set-season: 'В мире {world} изменён сезон на {season}!'
+  before-plant: 'Это удобрение необходимо использовать перед посадкой!'
+  no-season: 'Сезоны отключены'
 
-#Holograms
 hologram:
-  #Pot infomation
+  #Информация о почве
   grow-info:
     enable: true
     y-offset: 0.8
     duration: 1
-    #available variables {fertilizer} {times} {max_times}
-    text: '<font:customcrops:default>{fertilizer} </font><white>{times}<gray>/<white>{max_times}'
-  #Sprinkler infomation
+    #доступно {fertilizer} {times} {max_times}
+    text: '<font:draimfarming:default>{fertilizer} </font><white>{times}<gray>/<white>{max_times}'
+  #Информация о поливе
   sprinkler-info:
     enable: true
     y-offset: -0.2
     duration: 1
-    #available variables {water} {max_water}
-    left: '<font:customcrops:default>뀂'
+    #доступно {water} {max_water}
+    left: '<font:draimfarming:default>뀂'
     full: '뀁뀃'
     empty: '뀁뀄'
     right: '뀁뀅</font>'
 
 actionbar:
-  #Should actionbar be sent when using watering-can
+  #Следует ли отправлять панель действий при использовании лейки
   watering-can:
     enable: true
-    #available variables  {water} {max_water}
-    left: '<font:customcrops:default>뀂'
+    #доступно  {water} {max_water}
+    left: '<font:draimfarming:default>뀂'
     full: '뀁뀃'
     empty: '뀁뀄'
     right: '뀁뀅</font>'

@@ -14,29 +14,15 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.Objects;
 
-/**
- * Resolves {@link MavenLibrary} annotations for a class, and loads the dependency
- * into the classloader.
- */
 public final class LibraryLoader {
 
     @SuppressWarnings("Guava")
     private static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) Main.plugin.getClass().getClassLoader()));
 
-    /**
-     * Resolves all {@link MavenLibrary} annotations on the given object.
-     *
-     * @param object the object to load libraries for.
-     */
     public static void loadAll(Object object) {
         loadAll(object.getClass());
     }
 
-    /**
-     * Resolves all {@link MavenLibrary} annotations on the given class.
-     *
-     * @param clazz the class to load libraries for.
-     */
     public static void loadAll(Class<?> clazz) {
         MavenLibrary[] libs = clazz.getDeclaredAnnotationsByType(MavenLibrary.class);
         if (libs == null) {
@@ -53,7 +39,6 @@ public final class LibraryLoader {
     }
 
     public static void load(Dependency d) {
-        //Log.info(String.format("Loading dependency %s:%s:%s from %s", d.getGroupId(), d.getArtifactId(), d.getVersion(), d.getRepoUrl()));
         String name = d.getArtifactId() + "-" + d.getVersion();
 
         File saveLocation = new File(getLibFolder(d), name + ".jar");

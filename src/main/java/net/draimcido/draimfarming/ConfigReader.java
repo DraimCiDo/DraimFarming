@@ -94,11 +94,11 @@ public class ConfigReader {
             Main.plugin.reloadConfig();
             FileConfiguration config = Main.plugin.getConfig();
 
-            lang = config.getString("config.lang","chinese");
+            lang = config.getString("config.lang","russian");
 
             cropGrowTimeList = config.getLongList("config.grow-time");
             cropGrowTimeList.forEach(time -> {if(time < 0 || time > 23999){
-                AdventureManager.consoleMessage("<red>[CustomCrops] Grow time should be between 0 and 23999");}});
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Время роста должно составлять от 0 до 23999");}});
             timeToGrow = config.getInt("config.time-to-grow",60)*20;
             timeToWork = config.getInt("config.time-to-work",30)*20;
             asyncCheck = config.getBoolean("config.async-time-check",false);
@@ -151,7 +151,7 @@ public class ConfigReader {
             canAddWater = config.getBoolean("config.water-can-add-water-to-sprinkler",true);
 
             if (allWorld){
-                if (config.getStringList("config.whitelist-worlds").size() > 1) AdventureManager.consoleMessage("<red>[CustomCrops] Only one whitelist world is allowed when \"all-world-grow\" enabled!");
+                if (config.getStringList("config.whitelist-worlds").size() > 1) AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Допускается только один мир из белого списка, когда \"all-world-grow\" включен!");
                 referenceWorld = config.getStringList("config.whitelist-worlds").get(0);
             }
 
@@ -159,49 +159,49 @@ public class ConfigReader {
             worldNames = config.getStringList("config.whitelist-worlds");
             worldNames.forEach(worldName -> {
                 World world = Bukkit.getWorld(worldName);
-                if (world == null) AdventureManager.consoleMessage("<red>[CustomCrops] World " + worldName + " doesn't exist");
+                if (world == null) AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Мир " + worldName + " не найден");
                 else worlds.add(world);
             });
 
             integration = new ArrayList<>();
             if (config.getBoolean("config.integration.Kingdoms",false)){
-                if (Bukkit.getPluginManager().getPlugin("Kingdoms") == null) Log.warn("Failed to initialize Kingdoms!");
+                if (Bukkit.getPluginManager().getPlugin("Kingdoms") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать Kingdoms!");
                 else {integration.add(new KingdomsX());hookMessage("Kingdoms");}
             }
             if (config.getBoolean("config.integration.WorldGuard",false)){
-                if (Bukkit.getPluginManager().getPlugin("WorldGuard") == null) Log.warn("Failed to initialize WorldGuard!");
+                if (Bukkit.getPluginManager().getPlugin("WorldGuard") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать WorldGuard!");
                 else {integration.add(new WorldGuard());hookMessage("WorldGuard");}
             }
             if (config.getBoolean("config.integration.Towny",false)){
-                if (Bukkit.getPluginManager().getPlugin("Towny") == null) Log.warn("Failed to initialize Towny!");
+                if (Bukkit.getPluginManager().getPlugin("Towny") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать Towny!");
                 else {integration.add(new Towny());hookMessage("Towny");}
             }
             if (config.getBoolean("config.integration.Lands",false)){
-                if (Bukkit.getPluginManager().getPlugin("Lands") == null) Log.warn("Failed to initialize Lands!");
+                if (Bukkit.getPluginManager().getPlugin("Lands") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать Lands!");
                 else {integration.add(new Lands());hookMessage("Lands");}
             }
             if (config.getBoolean("config.integration.GriefPrevention",false)){
-                if (Bukkit.getPluginManager().getPlugin("GriefPrevention") == null) Log.warn("Failed to initialize GriefPrevention!");
+                if (Bukkit.getPluginManager().getPlugin("GriefPrevention") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать GriefPrevention!");
                 else {integration.add(new GriefPrevention());hookMessage("GriefPrevention");}
             }
 
             realisticSeason = false;
             if (config.getBoolean("config.integration.RealisticSeasons",false)){
-                if (Bukkit.getPluginManager().getPlugin("RealisticSeasons") == null) Log.warn("Failed to initialize RealisticSeasons!");
+                if (Bukkit.getPluginManager().getPlugin("RealisticSeasons") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать RealisticSeasons!");
                 else {realisticSeason = true;hookMessage("RealisticSeasons");}
             }
 
             skillXP = null;
             if (config.getBoolean("config.integration.mcMMO",false)){
-                if (Bukkit.getPluginManager().getPlugin("mcMMO") == null) Log.warn("Failed to initialize mcMMO!");
+                if (Bukkit.getPluginManager().getPlugin("mcMMO") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать mcMMO!");
                 else {skillXP = new mcMMO();hookMessage("mcMMO");}
             }
             if (config.getBoolean("config.integration.AureliumSkills",false)){
-                if (Bukkit.getPluginManager().getPlugin("AureliumSkills") == null) Log.warn("Failed to initialize AureliumSkills!");
+                if (Bukkit.getPluginManager().getPlugin("AureliumSkills") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать AureliumSkills!");
                 else {skillXP = new Aurelium();hookMessage("AureliumSkills");}
             }
             if(config.getBoolean("config.integration.EcoSkills",false)){
-                if(Bukkit.getPluginManager().getPlugin("EcoSkills") == null) Log.warn("Failed to initialize EcoSkills!");
+                if(Bukkit.getPluginManager().getPlugin("EcoSkills") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать EcoSkills!");
                 else {skillXP = new EcoSkill();hookMessage("EcoSkills");}
             }
         }
@@ -225,11 +225,11 @@ public class ConfigReader {
 
             YamlConfiguration config = getConfig("basic.yml");
 
-            pot = config.getString("basic.pot","customcrops:pot");
-            watered_pot = config.getString("basic.watered-pot","customcrops:watered_pot");
-            glass = config.getString("basic.greenhouse-glass","customcrops:greenhouse_glass");
-            dead = config.getString("basic.dead-crop","customcrops:crop_stage_death");
-            soilDetector = config.getString("basic.soil-detector","customcrops:soil_detector");
+            pot = config.getString("basic.pot","draimfarming:pot");
+            watered_pot = config.getString("basic.watered-pot","draimfarming:watered_pot");
+            glass = config.getString("basic.greenhouse-glass","draimfarming:greenhouse_glass");
+            dead = config.getString("basic.dead-crop","draimfarming:crop_stage_death");
+            soilDetector = config.getString("basic.soil-detector","draimfarming:soil_detector");
 
             hasWaterLore = config.getBoolean("lore.watering-can.enable",false);
             if (hasWaterLore){
@@ -245,7 +245,7 @@ public class ConfigReader {
                 config.getConfigurationSection("water-can").getKeys(false).forEach(key -> {
                     int width = config.getInt("water-can." + key + ".width");
                     if (width % 2 == 0){
-                        AdventureManager.consoleMessage("<red>[CustomCrops] Watering Can " + key + "'s width should be odd!</red>");
+                        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Лейка " + key + " должна быть нечетной!");
                         return;
                     }
                     String namespacedID = config.getString("water-can." + key + ".item");
@@ -253,7 +253,7 @@ public class ConfigReader {
                     CANS.put(namespacedID, wateringCan);
                 });
             }
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><white>" + CANS.size() + " <color:#FFEBCD>cans loaded!");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>" + CANS.size() + " <color:#FFEBCD>леек загружено!");
 
             SPRINKLERS.clear();
             if (config.contains("sprinkler")){
@@ -267,7 +267,7 @@ public class ConfigReader {
                     SPRINKLERS.put(twoD, sprinklerData);
                 });
             }
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><white>" + SPRINKLERS.size()/2 + "<color:#FFEBCD> sprinklers loaded!");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>" + SPRINKLERS.size()/2 + "<color:#FFEBCD> разбрызгивателей загружено!");
         }
     }
 
@@ -284,13 +284,13 @@ public class ConfigReader {
             YamlConfiguration config = getConfig("season.yml");
             enable = config.getBoolean("season.enable",false);
             if (enable){
-                if (Config.growMode == 4) AdventureManager.consoleMessage("<red>[CustomCrops] Warining: It's not advised to enable season in mode 4</red>");
+                if (Config.growMode == 4) AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Ошибка: Не рекомендуется включать сезон в режиме 4");
                 greenhouse = config.getBoolean("season.greenhouse.enable",false);
                 if (greenhouse) range = config.getInt("season.greenhouse.range",7);
                 seasonChange = config.getBoolean("season.auto-season-change.enable",false);
                 duration = config.getInt("season.auto-season-change.duration",28);
-                if (seasonChange) AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><color:#FFEBCD>Season Change mode: <gold>Auto");
-                else AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><color:#FFEBCD>Season Change mode: <gold>Command");
+                if (seasonChange) AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Режим смены сезона: <gold>Авто");
+                else AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Режим смены сезона: <gold>С помощью команды");
             }
         }
     }
@@ -401,7 +401,7 @@ public class ConfigReader {
                 String[] split = StringUtils.split(config.getString("crops." + key + ".amount"),"~");
                 cropInstance = new Crop(Integer.parseInt(split[0]),Integer.parseInt(split[1]));
             }else {
-                AdventureManager.consoleMessage("<red>[CustomCrops] You forget to set " + key +"'s amount!</red>");
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Вы забыли установить кол-во " + key);
                 return;
             }
             cropInstance.setGrowChance(config.getDouble("crops." + key + ".grow-chance", 1));
@@ -445,7 +445,7 @@ public class ConfigReader {
             }else {cropInstance.setDropIALoot(false);}
             CROPS.put(key, cropInstance);
         });
-        AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><white>" + CROPS.size() + " <color:#FFEBCD>crops loaded!");
+        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>" + CROPS.size() + " <color:#FFEBCD>посевов загружено!");
     }
 
     public static void fertilizerLoad(){
@@ -505,7 +505,7 @@ public class ConfigReader {
                 FERTILIZERS.put(id, yieldIncreasing);
             });
         }
-        AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><white>" + FERTILIZERS.size() + " <color:#FFEBCD>fertilizers loaded!");
+        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>" + FERTILIZERS.size() + " <color:#FFEBCD>фильтров загружено!");
     }
 
     public static class Sounds{
@@ -555,6 +555,6 @@ public class ConfigReader {
     }
 
     private static void hookMessage(String plugin){
-        AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><gold>" + plugin + " <color:#FFEBCD>Hooked!");
+        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>" + plugin + " <color:#FFEBCD>привязан!");
     }
 }

@@ -18,10 +18,6 @@ public class SeasonManager{
 
     public static HashMap<String, String> SEASON = new HashMap<>();
 
-    /**
-     * 读取文件中的季节
-     * @param file 季节数据文件
-     */
     private YamlConfiguration readData(File file) {
         if (!file.exists()) {
             try {
@@ -29,15 +25,12 @@ public class SeasonManager{
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                AdventureManager.consoleMessage("<red>[CustomCrops] 季节数据文件生成失败!</red>");
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Не удалось сгенерировать файл данных о сезоне!");
             }
         }
         return YamlConfiguration.loadConfiguration(file);
     }
 
-    /**
-     * 载入数据
-     */
     public void loadData() {
         SEASON.clear();
         YamlConfiguration data = readData(new File(Main.plugin.getDataFolder(), "data" + File.separator + "season.yml"));
@@ -59,10 +52,6 @@ public class SeasonManager{
         ConfigReader.Config.worlds.forEach(this::getSeason);
     }
 
-    /**
-     * 计算某个世界的季节
-     * @param world 世界
-     */
     public void getSeason(World world) {
         if (ConfigReader.Config.realisticSeason){
             Bukkit.getScheduler().runTaskLater(Main.plugin, ()->{
@@ -76,14 +65,11 @@ public class SeasonManager{
                 case 1 -> SEASON.put(world.getName(), "summer");
                 case 2 -> SEASON.put(world.getName(), "autumn");
                 case 3 -> SEASON.put(world.getName(), "winter");
-                default -> AdventureManager.consoleMessage("<red>[CustomCrops] 自动季节计算错误!</red>");
+                default -> AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Ошибка автоматического расчета сезона!");
             }
         }
     }
 
-    /**
-     * 保存数据
-     */
     public void saveData() {
         SEASON.forEach((key, value) -> {
             File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "season.yml");
@@ -93,16 +79,11 @@ public class SeasonManager{
                 data.save(file);
             } catch (IOException e) {
                 e.printStackTrace();
-                AdventureManager.consoleMessage("<red>[CustomCrops] season.yml保存出错!</red>");
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>season.yml с ошибками!");
             }
         });
     }
 
-    /**
-     * 设置季节
-     * @param worldName 世界名
-     * @param season 季节
-     */
     public boolean setSeason(String worldName, String season){
         if (!ConfigReader.Config.worldNames.contains(worldName)){
             return false;

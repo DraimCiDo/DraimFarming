@@ -59,7 +59,7 @@ public class HoloUtils {
             ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet2);
         }
         catch (Exception e) {
-            AdventureManager.consoleMessage("<red>[CustomCrops] 无法为玩家 "+ player.getName()+" 展示悬浮信息!</red>");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Не удалось отобразить информацию об игроке "+ player.getName());
             e.printStackTrace();
         }
 
@@ -76,7 +76,7 @@ public class HoloUtils {
             ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
         }
         catch (Exception e) {
-            AdventureManager.consoleMessage("<red>[CustomCrops] 无法为玩家 "+ player.getName()+" 移除悬浮信息!</red>");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Не удалось удалить информацию об игроке "+ player.getName());
             e.printStackTrace();
         }
     }

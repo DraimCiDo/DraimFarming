@@ -1,33 +1,33 @@
 #ItemsAdder items namespacedID
 basic:
-  pot: customcrops:pot
-  watered-pot: customcrops:watered_pot
-  greenhouse-glass: customcrops:greenhouse_glass
-  dead-crop: customcrops:crop_stage_death
-  soil-detector: customcrops:soil_detector
+  pot: draimfarming:pot
+  watered-pot: draimfarming:watered_pot
+  greenhouse-glass: draimfarming:greenhouse_glass
+  dead-crop: draimfarming:crop_stage_death
+  soil-detector: draimfarming:soil_detector
 
 
 
 water-can:
   watering_can_1:
-    item: customcrops:watering_can_1
+    item: draimfarming:watering_can_1
     #Max storage
     max: 3
     #Effective Range
     width: 1
     length: 1
   watering_can_2:
-    item: customcrops:watering_can_2
+    item: draimfarming:watering_can_2
     max: 4
     width: 1
     length: 3
   watering_can_3:
-    item: customcrops:watering_can_3
+    item: draimfarming:watering_can_3
     max: 5
     width: 3
     length: 3
   watering_can_4:
-    item: customcrops:watering_can_4
+    item: draimfarming:watering_can_4
     max: 6
     width: 3
     length: 5
@@ -43,9 +43,9 @@ lore:
     #{water}current water {max_water}max storage
     lore:
       - '<italic:false><white>{water_info}'
-      - '<italic:false><gray>Right click water to add water to the can.'
+      - '<italic:false><gray>ПКМ по воде, чтобы пополнить запасы лейки.'
     #{water_info}
-    left: '<font:customcrops:default>뀂'
+    left: '<font:draimfarming:default>뀂'
     full: '뀁뀃'
     empty: '뀁뀄'
     right: '뀁뀅</font>'
@@ -57,10 +57,10 @@ sprinkler:
     range: 1
     #Max storage
     max-water: 5
-    3Ditem: customcrops:sprinkler_1
-    2Ditem: customcrops:sprinkler_1_item
+    3Ditem: draimfarming:sprinkler_1
+    2Ditem: draimfarming:sprinkler_1_item
   sprinkler_2:
     range: 2
     max-water: 7
-    3Ditem: customcrops:sprinkler_2
-    2Ditem: customcrops:sprinkler_2_item
+    3Ditem: draimfarming:sprinkler_2
+    2Ditem: draimfarming:sprinkler_2_item

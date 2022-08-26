@@ -39,9 +39,6 @@ public class CropManager{
         this.isEntity = isEntity;
     }
 
-    /**
-     * 载入数据
-     */
     public void loadData() {
         File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "crop.yml");
         if(!file.exists()){
@@ -50,28 +47,22 @@ public class CropManager{
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                AdventureManager.consoleMessage("<red>[CustomCrops] 农作物数据文件生成失败!</red>");
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Не удалось создать файл данных обрезки!");
             }
         }
         this.data = YamlConfiguration.loadConfiguration(file);
     }
 
-    /**
-     * 保存数据
-     */
     public void saveData() {
         File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "crop.yml");
         try{
             data.save(file);
         }catch (IOException e){
             e.printStackTrace();
-            AdventureManager.consoleMessage("<red>[CustomCrops] crop.yml保存出错!</red>");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF> crop.yml не удалось сохранить!");
         }
     }
 
-    /**
-     * 将数据保存到data中
-     */
     public void updateData(){
         Cache.forEach((location, String) -> {
             int x = location.getX();
@@ -88,9 +79,6 @@ public class CropManager{
         RemoveCache.clear();
     }
 
-    /**
-     * 清除无用数据
-     */
     public void cleanData(){
         data.getKeys(false).forEach(world -> {
             data.getConfigurationSection(world).getKeys(false).forEach(chunk ->{
@@ -101,11 +89,6 @@ public class CropManager{
         });
     }
 
-    /**
-     * 农作物生长，Mode 1
-     * 仅加载区块生长
-     * @param worldName 进行生长判定的世界名
-     */
     public void growModeOne(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -146,11 +129,7 @@ public class CropManager{
         }
     }
 
-    /**
-     * 农作物生长，Mode 2
-     * 仅在线玩家的农作物生长
-     * @param worldName 进行生长判定的世界名
-     */
+
     public void growModeTwo(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -188,11 +167,6 @@ public class CropManager{
         }
     }
 
-    /**
-     * 农作物生长，Mode 3
-     * 仅在线玩家和加载区块的农作物生长
-     * @param worldName 进行生长判定的世界名
-     */
     public void growModeThree(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -202,7 +176,6 @@ public class CropManager{
             if (!isEntity){
                 data.getConfigurationSection(worldName).getKeys(false).forEach(chunk ->{
                     String[] split = StringUtils.split(chunk,",");
-                    //区块被加载，则强行生长判定
                     if (world.isChunkLoaded(Integer.parseInt(split[0]), Integer.parseInt(split[1]))){
                         data.getConfigurationSection(worldName + "." + chunk).getValues(false).forEach((key, value) -> {
                             String[] coordinate = StringUtils.split(key, ",");
@@ -215,7 +188,6 @@ public class CropManager{
                             }, random);
                         });
                     }
-                    //区块未加载，玩家在线
                     else{
                         data.getConfigurationSection(worldName + "." + chunk).getValues(false).forEach((key, value) -> {
                             if (!players.contains(value)) return;
@@ -234,7 +206,6 @@ public class CropManager{
             else {
                 data.getConfigurationSection(worldName).getKeys(false).forEach(chunk ->{
                     String[] split = StringUtils.split(chunk,",");
-                    //区块被加载，则强行生长判定
                     if (world.isChunkLoaded(Integer.parseInt(split[0]), Integer.parseInt(split[1]))){
                         data.getConfigurationSection(worldName + "." + chunk).getValues(false).forEach((key, value) -> {
                             String[] coordinate = StringUtils.split(key, ",");
@@ -245,7 +216,6 @@ public class CropManager{
                             }, random);
                         });
                     }
-                    //区块未加载，玩家在线
                     else{
                         data.getConfigurationSection(worldName + "." + chunk).getValues(false).forEach((key, value) -> {
                             if (!players.contains(value)) return;
@@ -262,11 +232,6 @@ public class CropManager{
         }
     }
 
-    /**
-     * 农作物生长，Mode 4
-     * 全部农作物生长
-     * @param worldName 进行生长判定的世界名
-     */
     public void growModeFour(String worldName){
         if(!ConfigReader.Config.allWorld){updateData();}
         if(!ConfigReader.Config.allWorld) saveData();
@@ -301,10 +266,6 @@ public class CropManager{
         }
     }
 
-    /**
-     * 全部世界农作物生长
-     * 对于使用动态加载世界的服务器有效
-     */
     public void cropGrowAll(){
         updateData();
         List<World> worlds = Bukkit.getWorlds();
@@ -322,41 +283,29 @@ public class CropManager{
         saveData();
     }
 
-    /**
-     * 对某个位置进行生长判定
-     * @param worldName 世界名
-     * @param seedLocation 种子位置
-     * @return 是否消除数据
-     */
     private boolean growJudge(String worldName, Location seedLocation) {
         CustomBlock seedBlock = CustomBlock.byAlreadyPlaced(seedLocation.getBlock());
-        //自定义农作物方块不存在
         if(seedBlock == null) {
             return true;
         }
         String namespacedID = seedBlock.getNamespacedID();
         String id = seedBlock.getId();
-        //已死亡或不是农作物
         if(namespacedID.equals(ConfigReader.Basic.dead) || !namespacedID.contains("_stage_")) {
             return true;
         }
-        //农作物下方自定义方块不存在
         Location potLocation = seedLocation.clone().subtract(0,1,0);
         CustomBlock pot = CustomBlock.byAlreadyPlaced(potLocation.getBlock());
         if (pot == null){
             return true;
         }
-        //农作物实例不存在
         String[] cropNameList = StringUtils.split(id,"_");
         Crop cropInstance = ConfigReader.CROPS.get(cropNameList[0]);
         if (cropInstance == null){
             return true;
         }
-        //获取自定义方块ID
         String potNamespacedID = pot.getNamespacedID();
         if (potNamespacedID.equals(ConfigReader.Basic.watered_pot)){
 
-            //如果启用季节限制且农作物有季节需求
             if (ConfigReader.Season.enable && cropInstance.getSeasons() != null){
                 if (isWrongSeason(seedLocation, cropInstance.getSeasons(), worldName)){
                     bukkitScheduler.runTask(Main.plugin, () -> {
@@ -366,24 +315,17 @@ public class CropManager{
                     return true;
                 }
             }
-            //获取下一阶段
             int nextStage = Integer.parseInt(cropNameList[2]) + 1;
-            //下一阶段存在
             if (CustomBlock.getInstance(StringUtils.chop(namespacedID) + nextStage) != null) {
-                //尝试获取肥料类型
                 Fertilizer fertilizer = PotManager.Cache.get(LocUtils.fromLocation(potLocation));
-                //有肥料
                 if (fertilizer != null){
-                    //查询剩余使用次数
                     int times = fertilizer.getTimes();
                     if (times > 0){
                         fertilizer.setTimes(times - 1);
 
                         Fertilizer fertilizerConfig = ConfigReader.FERTILIZERS.get(fertilizer.getKey());
-                        //生长激素
                         if (fertilizerConfig instanceof SpeedGrow speedGrow){
                             if (cropInstance.getGrowChance() > Math.random()){
-                                //农作物存在下两个阶段
                                 if (Math.random() < speedGrow.getChance() && CustomBlock.getInstance(StringUtils.chop(namespacedID) + (nextStage + 1)) != null){
                                     addStage(potLocation, seedLocation, namespacedID, nextStage + 1);
                                 }else {
@@ -393,7 +335,6 @@ public class CropManager{
                                 notAddStage(potLocation);
                             }
                         }
-                        //保湿土壤
                         else if(fertilizerConfig instanceof RetainingSoil retainingSoil){
                             if (Math.random() < retainingSoil.getChance()){
                                 if (cropInstance.getGrowChance() > Math.random()){
@@ -407,7 +348,6 @@ public class CropManager{
                                 }
                             }
                         }
-                        //品质肥料
                         else if(fertilizerConfig instanceof QualityCrop || fertilizerConfig instanceof YieldIncreasing){
                             if (cropInstance.getGrowChance() > Math.random()){
                                 addStage(potLocation, seedLocation, namespacedID, nextStage);
@@ -415,8 +355,7 @@ public class CropManager{
                                 notAddStage(potLocation);
                             }
                         }else {
-                            //未知肥料类型处理
-                            AdventureManager.consoleMessage("<red>[CustomCrops] Unknown fertilizer, Auto removed!</red>");
+                            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Неизвестное удобрение, автоматически удаленно!");
                             PotManager.Cache.remove(LocUtils.fromLocation(potLocation));
 
                             if (cropInstance.getGrowChance() > Math.random()){
@@ -425,13 +364,11 @@ public class CropManager{
                                 notAddStage(potLocation);
                             }
                         }
-                        //肥料的最后一次使用
                         if (times == 1){
                             PotManager.Cache.remove(LocUtils.fromLocation(potLocation));
                         }
                     }
                     else {
-                        //移除肥料信息，一般不会出现此情况
                         PotManager.Cache.remove(LocUtils.fromLocation(potLocation));
                         if (cropInstance.getGrowChance() > Math.random()){
                             addStage(potLocation, seedLocation, namespacedID, nextStage);
@@ -440,7 +377,6 @@ public class CropManager{
                         }
                     }
                 }
-                //没有肥料
                 else {
                     if (cropInstance.getGrowChance() > Math.random()){
                         addStage(potLocation, seedLocation, namespacedID, nextStage);
@@ -449,9 +385,7 @@ public class CropManager{
                     }
                 }
             }
-            //农作物是否存在巨大化
             else if(cropInstance.getGiant() != null){
-                //巨大化判定
                 if (cropInstance.getGiantChance() > Math.random()){
 
                     if (cropInstance.isBlock()){
@@ -463,17 +397,14 @@ public class CropManager{
                         });
                     }else {
                         bukkitScheduler.runTask(Main.plugin, () ->{
-                            //加载区块哦亲
                             CustomBlock.remove(seedLocation);
                             CustomFurniture.spawn(cropInstance.getGiant(), seedLocation.getBlock());
                             CustomBlock.remove(potLocation);
                             CustomBlock.place(ConfigReader.Basic.pot, potLocation);
                         });
                     }
-                    //成功巨大化，移除数据
                     return true;
                 }else {
-                    //失败，转湿为干
                     bukkitScheduler.runTask(Main.plugin, () ->{
                         CustomBlock.remove(potLocation);
                         CustomBlock.place(ConfigReader.Basic.pot, potLocation);
@@ -481,7 +412,6 @@ public class CropManager{
                     return ConfigReader.Config.oneTry || ConfigReader.Config.growMode == 4;
                 }
             }else {
-                //若无下一阶段，无巨大化，未启用季节，则移除无用数据
                 if (!ConfigReader.Season.enable) return true;
                 bukkitScheduler.runTask(Main.plugin, () -> {
                     CustomBlock.remove(potLocation);
@@ -489,14 +419,10 @@ public class CropManager{
                 });
             }
         }
-        //干燥的种植盆
         else if(potNamespacedID.equals(ConfigReader.Basic.pot)){
-            //未启用季节
             if(!ConfigReader.Season.enable) return false;
-            //农作物无视季节
             List<String> seasons = cropInstance.getSeasons();
             if(seasons == null) return false;
-            //错误季节
             if(isWrongSeason(seedLocation, seasons, worldName)){
                 bukkitScheduler.runTask(Main.plugin, () -> {
                     CustomBlock.remove(seedLocation);
@@ -505,19 +431,12 @@ public class CropManager{
                 return true;
             }
         }
-        //不是种植盆
         else {
             return true;
         }
         return false;
     }
 
-    /**
-     * 判定季节
-     * @param worldName 世界名
-     * @param seasons 农作物能生长的季节
-     * @param seedLocation 农作物的位置
-     */
     private boolean isWrongSeason(Location seedLocation, List<String> seasons, String worldName){
         if(ConfigReader.Season.greenhouse){
             for(int i = 1; i <= ConfigReader.Season.range; i++){
@@ -545,36 +464,27 @@ public class CropManager{
         return true;
     }
 
-    /**
-     * 对某个位置进行生长判定
-     * @param worldName 世界名
-     * @param seedLocation 种子位置
-     */
     private void growJudgeEntity(String worldName, Location seedLocation, String path) {
         Chunk chunk = seedLocation.getChunk();
         chunk.load();
         bukkitScheduler.runTaskLater(Main.plugin, ()-> {
             if (chunk.isEntitiesLoaded()){
                 CustomFurniture crop = FurnitureUtils.getFurniture(seedLocation.clone().add(0.5,0.1,0.5));
-                //自定义农作物家具不存在
                 if(crop == null) {
                     data.set(path, null);
                     return;
                 }
                 String namespacedID = crop.getNamespacedID();
-                //已死亡或不是农作物
                 if(namespacedID.equals(ConfigReader.Basic.dead) || !namespacedID.contains("_stage_")) {
                     data.set(path, null);
                     return;
                 }
-                //农作物下方自定义方块不存在
                 Location potLocation = seedLocation.clone().subtract(0,1,0);
                 CustomBlock pot = CustomBlock.byAlreadyPlaced(potLocation.getBlock());
                 if (pot == null){
                     data.set(path, null);
                     return;
                 }
-                //农作物实例不存在
                 String id = crop.getId();
                 String[] cropNameList = StringUtils.split(id,"_");
                 Crop cropInstance = ConfigReader.CROPS.get(cropNameList[0]);
@@ -582,10 +492,8 @@ public class CropManager{
                     data.set(path, null);
                     return;
                 }
-                //获取自定义方块ID
                 String potNamespacedID = pot.getNamespacedID();
                 if (potNamespacedID.equals(ConfigReader.Basic.watered_pot)){
-                    //如果启用季节限制且农作物有季节需求
                     if (ConfigReader.Season.enable && cropInstance.getSeasons() != null){
                         if (isWrongSeason(seedLocation, cropInstance.getSeasons(), worldName)){
                             seedLocation.getChunk().load();
@@ -595,25 +503,18 @@ public class CropManager{
                             return;
                         }
                     }
-                    //获取下一阶段
                     int nextStage = Integer.parseInt(cropNameList[2]) + 1;
-                    //下一阶段存在
                     if (CustomFurniture.getInstance(StringUtils.chop(namespacedID) + nextStage) != null) {
-                        //尝试获取肥料类型
                         Fertilizer fertilizer = PotManager.Cache.get(LocUtils.fromLocation(potLocation));
-                        //有肥料
                         if (fertilizer != null){
-                            //查询剩余使用次数
                             int times = fertilizer.getTimes();
                             if (times > 0){
 
                                 fertilizer.setTimes(times - 1);
 
                                 Fertilizer fertilizerConfig = ConfigReader.FERTILIZERS.get(fertilizer.getKey());
-                                //生长激素
                                 if (fertilizerConfig instanceof SpeedGrow speedGrow){
                                     if (cropInstance.getGrowChance() > Math.random()){
-                                        //农作物存在下两个阶段
                                         if (Math.random() < speedGrow.getChance() && CustomBlock.getInstance(StringUtils.chop(namespacedID) + (nextStage + 1)) != null){
                                             addStageEntity(potLocation, seedLocation, crop.getArmorstand(), StringUtils.chop(namespacedID) + (nextStage + 1));
                                         }else {
@@ -625,7 +526,6 @@ public class CropManager{
                                         CustomBlock.place(ConfigReader.Basic.pot, potLocation);
                                     }
                                 }
-                                //保湿土壤
                                 else if(fertilizerConfig instanceof RetainingSoil retainingSoil){
                                     if (Math.random() < retainingSoil.getChance()){
                                         if (cropInstance.getGrowChance() > Math.random()){
@@ -640,7 +540,6 @@ public class CropManager{
                                         }
                                     }
                                 }
-                                //品质肥料
                                 else if(fertilizerConfig instanceof QualityCrop || fertilizerConfig instanceof YieldIncreasing){
                                     if (cropInstance.getGrowChance() > Math.random()){
                                         addStageEntity(potLocation, seedLocation, crop.getArmorstand(), StringUtils.chop(namespacedID) + nextStage);
@@ -649,8 +548,7 @@ public class CropManager{
                                         CustomBlock.place(ConfigReader.Basic.pot, potLocation);
                                     }
                                 }else {
-                                    //未知肥料类型处理
-                                    AdventureManager.consoleMessage("<red>[CustomCrops] Unknown fertilizer, Auto removed!</red>");
+                                    AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Неизвестное удобрение, автоматически удаленно!");
                                     PotManager.Cache.remove(LocUtils.fromLocation(potLocation));
                                     if (cropInstance.getGrowChance() > Math.random()){
                                         addStageEntity(potLocation, seedLocation, crop.getArmorstand(), StringUtils.chop(namespacedID) + nextStage);
@@ -659,13 +557,11 @@ public class CropManager{
                                         CustomBlock.place(ConfigReader.Basic.pot, potLocation);
                                     }
                                 }
-                                //肥料的最后一次使用
                                 if (times == 1){
                                     PotManager.Cache.remove(LocUtils.fromLocation(potLocation));
                                 }
                             }
                             else {
-                                //移除肥料信息，一般不会出现此情况
                                 PotManager.Cache.remove(LocUtils.fromLocation(potLocation));
                                 if (cropInstance.getGrowChance() > Math.random()){
                                     addStageEntity(potLocation, seedLocation, crop.getArmorstand(), StringUtils.chop(namespacedID) + nextStage);
@@ -675,7 +571,6 @@ public class CropManager{
                                 }
                             }
                         }
-                        //没有肥料
                         else {
                             if (cropInstance.getGrowChance() > Math.random()){
                                 addStageEntity(potLocation, seedLocation, crop.getArmorstand(), StringUtils.chop(namespacedID) + nextStage);
@@ -685,9 +580,7 @@ public class CropManager{
                             }
                         }
                     }
-                    //农作物是否存在巨大化
                     else if(cropInstance.getGiant() != null){
-                        //巨大化判定
                         if (cropInstance.getGiantChance() > Math.random()){
                             if (cropInstance.isBlock()){
                                 CustomBlock.remove(potLocation);
@@ -700,10 +593,8 @@ public class CropManager{
                                 CustomFurniture.remove(crop.getArmorstand(), false);
                                 CustomFurniture.spawn(cropInstance.getGiant(), seedLocation.getBlock());
                             }
-                            //成功巨大化，移除数据
                             data.set(path, null);
                         }else {
-                            //失败，转湿为干
                             CustomBlock.remove(potLocation);
                             CustomBlock.place(ConfigReader.Basic.pot, potLocation);
                             if (ConfigReader.Config.oneTry || ConfigReader.Config.growMode == 4){
@@ -711,7 +602,6 @@ public class CropManager{
                             }
                         }
                     }else {
-                        //若无下一阶段，无巨大化，未启用季节，则移除无用数据
                         if (!ConfigReader.Season.enable){
                             data.set(path, null);
                             return;
@@ -720,14 +610,10 @@ public class CropManager{
                         CustomBlock.place(ConfigReader.Basic.pot, potLocation);
                     }
                 }
-                //干燥的种植盆
                 else if(potNamespacedID.equals(ConfigReader.Basic.pot)){
-                    //未启用季节
                     if(!ConfigReader.Season.enable) return;
-                    //农作物无视季节
                     List<String> seasons = cropInstance.getSeasons();
                     if(seasons == null) return;
-                    //错误季节
                     if(isWrongSeason(seedLocation, seasons, worldName)){
                         CustomBlock.remove(seedLocation);
                         CustomBlock.place(ConfigReader.Basic.dead, seedLocation);
@@ -739,13 +625,6 @@ public class CropManager{
     }
 
 
-    /**
-     * 生长一个阶段(消耗水)
-     * @param potLocation 种植盆位置
-     * @param seedLocation 农作物位置
-     * @param namespacedID 农作物下一阶段的ID
-     * @param nextStage 农作物下一阶段的阶段数
-     */
     private void addStage(Location potLocation, Location seedLocation, String namespacedID, int nextStage){
         String stage = StringUtils.chop(namespacedID) + nextStage;
         bukkitScheduler.runTask(Main.plugin, () ->{
@@ -756,12 +635,6 @@ public class CropManager{
         });
     }
 
-    /**
-     * 生长一个阶段(不消耗水)
-     * @param seedLocation 农作物位置
-     * @param namespacedID 农作物下一阶段的ID
-     * @param nextStage 农作物下一阶段的阶段数
-     */
     private void addStage(Location seedLocation, String namespacedID, int nextStage){
         String stage = StringUtils.chop(namespacedID) + nextStage;
         bukkitScheduler.runTask(Main.plugin, () ->{
@@ -787,10 +660,6 @@ public class CropManager{
         }
     }
 
-    /**
-     * 停滞阶段(消耗水)
-     * @param potLocation 种植盆位置
-     */
     private void notAddStage(Location potLocation){
         bukkitScheduler.runTask(Main.plugin, () ->{
             CustomBlock.remove(potLocation);

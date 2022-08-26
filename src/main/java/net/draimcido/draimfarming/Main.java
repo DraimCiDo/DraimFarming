@@ -61,7 +61,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
 
         adventure = BukkitAudiences.create(plugin);
-        AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><color:#FFEBCD>Running on " + Bukkit.getVersion());
+        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Запущен на " + Bukkit.getVersion());
 
         ConfigReader.reloadConfig();
         if (!Objects.equals(ConfigReader.Config.version, "3")){
@@ -71,12 +71,12 @@ public final class Main extends JavaPlugin {
         if(Bukkit.getPluginManager().getPlugin("PlaceHolderAPI") != null){
             placeholders = new Placeholders();
             placeholders.register();
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><gold>PlaceHolderAPI <color:#FFEBCD>Hooked!");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>PlaceHolderAPI <color:#FFEBCD>подвязан!");
             Bukkit.getPluginManager().registerEvents(new PapiReload(), this);
         }
 
-        Objects.requireNonNull(Bukkit.getPluginCommand("customcrops")).setExecutor(new Executor(this));
-        Objects.requireNonNull(Bukkit.getPluginCommand("customcrops")).setTabCompleter(new Completer());
+        Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setExecutor(new Executor(this));
+        Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setTabCompleter(new Completer());
 
         //公用事件
         Bukkit.getPluginManager().registerEvents(new ItemSpawn(), this);
@@ -95,14 +95,14 @@ public final class Main extends JavaPlugin {
         this.cropTimer = new CropTimer();
         if (ConfigReader.Config.cropMode.equalsIgnoreCase("item_frame")){
             this.cropManager = new CropManager(true);
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><color:#F5DEB3>Crop Mode: ItemFrame");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Режим посевов: ItemFrame");
             Bukkit.getPluginManager().registerEvents(new RightClickI(), this);
             Bukkit.getPluginManager().registerEvents(new BreakBlockI(), this);
             Bukkit.getPluginManager().registerEvents(new BreakFurnitureI(), this);
             Bukkit.getPluginManager().registerEvents(new InteractFurnitureI(), this);
         }else{
             this.cropManager = new CropManager(false);
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><color:#F5DEB3>Crop Mode: TripWire");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Режим посевов: TripWire");
             Bukkit.getPluginManager().registerEvents(new RightClickT(), this);
             Bukkit.getPluginManager().registerEvents(new BreakBlockT(), this);
             Bukkit.getPluginManager().registerEvents(new BreakFurnitureT(), this);
@@ -110,7 +110,7 @@ public final class Main extends JavaPlugin {
             checkIAConfig();
         }
         this.cropManager.loadData();
-        AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><color:#F5DEB3>Plugin Enabled!");
+        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Плагин успешно запущен!");
     }
 
     @Override
@@ -140,9 +140,9 @@ public final class Main extends JavaPlugin {
             placeholders = null;
         }
 
-        getLogger().info("Backing Up...");
+        getLogger().info("Создаётся бекап...");
         FileUtils.backUpData();
-        getLogger().info("Done.");
+        getLogger().info("Готово.");
 
         if (cropTimer != null) {
             this.cropTimer.stopTimer(cropTimer.getTaskID());
@@ -164,8 +164,8 @@ public final class Main extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><red>Detected that you might have not set \"disable-REAL_WIRE\" false in ItemsAdder's config!");
-            AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] </gradient><red>You need a restart to apply that config :)");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Мы заметили что функция \"disable-REAL_WIRE\" не стоит на false в ItemsAdder конфиге!");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Вам требуется перезапустить сервер - чтобы заработал конфиг :)");
         }
     }
 }

@@ -33,9 +33,6 @@ public class SprinklerManager {
         this.bukkitScheduler = Bukkit.getScheduler();
     }
 
-    /**
-     * 载入数据
-     */
     public void loadData() {
         File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "sprinkler.yml");
         if(!file.exists()){
@@ -44,28 +41,22 @@ public class SprinklerManager {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                AdventureManager.consoleMessage("<red>[CustomCrops] 洒水器数据文件生成失败!</red>");
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Не удалось создать файл данных автополивной системы");
             }
         }
         data = YamlConfiguration.loadConfiguration(file);
     }
 
-    /**
-     * 保存数据
-     */
     public void saveData(){
         File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "sprinkler.yml");
         try{
             data.save(file);
         }catch (IOException e){
             e.printStackTrace();
-            AdventureManager.consoleMessage("<red>[CustomCrops] sprinkler.yml保存出错!</red>");
+            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>sprinkler.yml с ошибками!");
         }
     }
 
-    /**
-     * 清理无用数据
-     */
     public void cleanData(){
         data.getKeys(false).forEach(world -> {
             data.getConfigurationSection(world).getKeys(false).forEach(chunk ->{
@@ -76,9 +67,6 @@ public class SprinklerManager {
         });
     }
 
-    /**
-     * 将数据保存到data中
-     */
     public void updateData(){
         Cache.forEach((location, sprinklerData) -> {
             String world = location.getWorldName();
@@ -100,10 +88,6 @@ public class SprinklerManager {
         RemoveCache.clear();
     }
 
-    /**
-     * 洒水器工作，Mode 1
-     * @param worldName 世界名
-     */
     public void workModeOne(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -142,10 +126,6 @@ public class SprinklerManager {
         }
     }
 
-    /**
-     * 洒水器工作，Mode 2
-     * @param worldName 世界名
-     */
     public void workModeTwo(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -184,10 +164,6 @@ public class SprinklerManager {
         }
     }
 
-    /**
-     * 洒水器工作，Mode 3
-     * @param worldName 世界名
-     */
     public void workModeThree(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -254,10 +230,6 @@ public class SprinklerManager {
         }
     }
 
-    /**
-     * 洒水器工作，Mode 4
-     * @param worldName 世界名
-     */
     public void workModeFour(String worldName){
         if(!ConfigReader.Config.allWorld) updateData();
         if(!ConfigReader.Config.allWorld) saveData();
@@ -288,9 +260,6 @@ public class SprinklerManager {
     }
 
 
-    /**
-     * 所有世界的洒水器工作
-     */
     public void sprinklerWorkAll(){
         updateData();
         List<World> worlds = Bukkit.getWorlds();
@@ -308,10 +277,6 @@ public class SprinklerManager {
         saveData();
     }
 
-    /**
-     * 转干为湿
-     * @param potLoc 种植盆的位置
-     */
     private void waterPot(Location potLoc) {
         CustomBlock cb = CustomBlock.byAlreadyPlaced(potLoc.getBlock());
         if(cb != null){
@@ -331,15 +296,6 @@ public class SprinklerManager {
     }
 
 
-    /**
-     * 获取某个洒水器的水量
-     * @param location 洒水器位置
-     * @param world 世界
-     * @param x 坐标
-     * @param z 坐标
-     * @param sprinkler 洒水器类型
-     * @return 水量
-     */
     public static int getCurrentWater(Location location, String world, int x, int z, Sprinkler sprinkler) {
         int currentWater;
         if (sprinkler != null) currentWater = sprinkler.getWater();

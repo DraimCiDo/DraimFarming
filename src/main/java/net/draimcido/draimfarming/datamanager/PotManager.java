@@ -17,9 +17,6 @@ public class PotManager {
 
     public static ConcurrentHashMap<SimpleLocation, Fertilizer> Cache = new ConcurrentHashMap<>();
 
-    /**
-     * 载入数据
-     */
     public void loadData(){
         File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "pot.yml");
         if(!file.exists()){
@@ -28,7 +25,7 @@ public class PotManager {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                AdventureManager.consoleMessage("<red>[CustomCrops] 种植盆数据文件生成失败!</red>");
+                AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Не удалось создать файл данных грядок!");
             }
         }
         YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
@@ -52,16 +49,13 @@ public class PotManager {
                         YieldIncreasing yieldIncreasing = new YieldIncreasing(key, map.getInt("times"));
                         Cache.put(new SimpleLocation(worldName, Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2])), yieldIncreasing);
                     }else {
-                        AdventureManager.consoleMessage("<red>[CustomCrops] 未知肥料类型错误!</red>");
+                        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Ошибка неизвестный тип удобрения!");
                     }
                 }
             });
         });
     }
 
-    /**
-     * 保存数据
-     */
     public void saveData(){
         File file = new File(Main.plugin.getDataFolder(), "data" + File.separator + "pot.yml");
         YamlConfiguration data = new YamlConfiguration();

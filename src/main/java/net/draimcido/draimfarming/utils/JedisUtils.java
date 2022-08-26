@@ -35,7 +35,7 @@ public class JedisUtils {
 
         jedisPool = new JedisPool(jedisPoolConfig, configuration.getString("redis.host","localhost"), configuration.getInt("redis.port",6379));
 
-        AdventureManager.consoleMessage("<gradient:#ff206c:#fdee55>[CustomCrops] <color:#FFEBCD>Redis Enabled!");
+        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming] </gradient> <color:#E1FFFF>Redis запущен!");
 
         List<Jedis> minIdleJedisList = new ArrayList<>(jedisPoolConfig.getMinIdle());
         for (int i = 0; i < jedisPoolConfig.getMinIdle(); i++) {
@@ -63,7 +63,7 @@ public class JedisUtils {
     public static void addPlayer(String player){
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.plugin, ()->{
             Jedis jedis = getJedis();
-            jedis.sadd("cc_players", player);
+            jedis.sadd("df_players", player);
             jedis.close();
         }, 20);
     }
@@ -71,7 +71,7 @@ public class JedisUtils {
     public static void remPlayer(String player){
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, ()->{
             Jedis jedis = getJedis();
-            jedis.srem("cc_players", player);
+            jedis.srem("df_players", player);
             jedis.close();
         });
     }

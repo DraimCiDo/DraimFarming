@@ -6,9 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 
-/**
- * Utility for quickly accessing a logger instance without using {@link Bukkit#getLogger()}
- */
 public final class Log {
 
     public static void info(@NotNull String s) {
@@ -32,7 +29,7 @@ public final class Log {
     }
 
     private Log() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
+        throw new UnsupportedOperationException("Этот класс не может быть создан!");
     }
 
 }

@@ -7,7 +7,7 @@ speed:
     #How many times can this fertilizer stay in pot
     times: 14
     #ItemsAdder item namespacedID
-    item: customcrops:speed_1
+    item: draimfarming:speed_1
     #Should this fertilizer be used before planting
     before-plant: true
     #Optional
@@ -19,13 +19,13 @@ speed:
     name: '뀍'
     chance: 0.2
     times: 14
-    item: customcrops:speed_2
+    item: draimfarming:speed_2
     before-plant: true
   speed_3:
     name: '뀎'
     chance: 0.3
     times: 14
-    item: customcrops:speed_3
+    item: draimfarming:speed_3
     before-plant: true
 
 
@@ -36,21 +36,21 @@ retaining:
     name: '뀉'
     chance: 0.1
     times: 28
-    item: customcrops:retaining_1
+    item: draimfarming:retaining_1
     before-plant: false
 
   retaining_2:
     name: '뀊'
     chance: 0.2
     times: 28
-    item: customcrops:retaining_2
+    item: draimfarming:retaining_2
     before-plant: false
 
   retaining_3:
     name: '뀋'
     chance: 0.3
     times: 28
-    item: customcrops:retaining_3
+    item: draimfarming:retaining_3
     before-plant: false
 
 
@@ -61,21 +61,21 @@ quality:
     name: '뀆'
     times: 28
     chance: 7/2/1
-    item: customcrops:quality_1
+    item: draimfarming:quality_1
     before-plant: true
 
   quality_2:
     name: '뀇'
     times: 28
     chance: 11/6/3
-    item: customcrops:quality_2
+    item: draimfarming:quality_2
     before-plant: true
 
   quality_3:
     name: '뀈'
     times: 28
     chance: 2/2/1
-    item: customcrops:quality_3
+    item: draimfarming:quality_3
     before-plant: true
 
 
@@ -87,19 +87,19 @@ quantity:
     times: 14
     chance: 0.5
     bonus: 1
-    item: customcrops:quantity_1
+    item: draimfarming:quantity_1
     before-plant: true
   quantity_2:
     name: '뀐'
     times: 14
     chance: 0.5
     bonus: 2
-    item: customcrops:quantity_2
+    item: draimfarming:quantity_2
     before-plant: true
   quantity_3:
     name: '뀑'
     times: 14
     chance: 0.8
     bonus: 2
-    item: customcrops:quantity_3
+    item: draimfarming:quantity_3
     before-plant: true
