@@ -2,7 +2,7 @@ package net.draimcido.draimfarming.datamanager;
 
 import net.draimcido.draimfarming.ConfigReader;
 import net.draimcido.draimfarming.Main;
-import net.draimcido.draimfarming.hook.RealisticSeason;
+import net.draimcido.draimfarming.integrations.RealisticSeason;
 import net.draimcido.draimfarming.utils.AdventureManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

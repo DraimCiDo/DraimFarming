@@ -1,4 +1,4 @@
-package net.draimcido.draimfarming.hook;
+package net.draimcido.draimfarming.integrations;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.draimcido.draimfarming.ConfigReader;

@@ -31,6 +31,7 @@ public class ConfigReader {
     public static HashMap<String, Fertilizer> FERTILIZERS = new HashMap<>();
     public static HashMap<String, WateringCan> CANS = new HashMap<>();
     public static HashMap<String, Sprinkler> SPRINKLERS = new HashMap<>();
+    public static boolean useRedis;
 
     public static YamlConfiguration getConfig(String configName) {
         File file = new File(Main.plugin.getDataFolder(), configName);
@@ -203,6 +204,10 @@ public class ConfigReader {
             if(config.getBoolean("config.integration.EcoSkills",false)){
                 if(Bukkit.getPluginManager().getPlugin("EcoSkills") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать EcoSkills!");
                 else {skillXP = new EcoSkill();hookMessage("EcoSkills");}
+            }
+            if(config.getBoolean("config.integration.JobsReborn",false)){
+                if(Bukkit.getPluginManager().getPlugin("Jobs") == null) Log.warn("Failed to initialize Jobs!");
+                else {skillXP = new JobsReborn();hookMessage("JobsReborn");}
             }
         }
     }
@@ -550,8 +555,12 @@ public class ConfigReader {
 
     public static void tryEnableJedis(){
         YamlConfiguration configuration = ConfigReader.getConfig("redis.yml");
-        JedisUtils.useRedis = configuration.getBoolean("redis.enable", false);
-        if (JedisUtils.useRedis) JedisUtils.initializeRedis(configuration);
+        if (configuration.getBoolean("redis.enable", false)){
+            useRedis = true;
+            JedisUtils.initializeRedis(configuration);
+        }else {
+            useRedis = false;
+        }
     }
 
     private static void hookMessage(String plugin){

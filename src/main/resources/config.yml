@@ -1,5 +1,5 @@
 #Don't change
-config-version: '4'
+config-version: '5'
 
 
 config:
@@ -58,6 +58,7 @@ config:
     AureliumSkills: false
     mcMMO: false
     EcoSkills: false
+    JobsReborn: false
     #integration to sync seasons
     RealisticSeasons: false
 

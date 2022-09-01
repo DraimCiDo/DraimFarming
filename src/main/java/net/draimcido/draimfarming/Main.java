@@ -7,7 +7,7 @@ import net.draimcido.draimfarming.datamanager.PotManager;
 import net.draimcido.draimfarming.datamanager.SeasonManager;
 import net.draimcido.draimfarming.datamanager.SprinklerManager;
 import net.draimcido.draimfarming.helper.LibraryLoader;
-import net.draimcido.draimfarming.hook.Placeholders;
+import net.draimcido.draimfarming.integrations.Placeholders;
 import net.draimcido.draimfarming.listener.ItemSpawn;
 import net.draimcido.draimfarming.listener.JoinAndQuit;
 import net.draimcido.draimfarming.listener.PapiReload;
@@ -64,21 +64,19 @@ public final class Main extends JavaPlugin {
         AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Запущен на " + Bukkit.getVersion());
 
         ConfigReader.reloadConfig();
-        if (!Objects.equals(ConfigReader.Config.version, "3")){
+        if (!Objects.equals(ConfigReader.Config.version, "5")){
             ConfigUtils.update();
         }
 
         if(Bukkit.getPluginManager().getPlugin("PlaceHolderAPI") != null){
             placeholders = new Placeholders();
             placeholders.register();
-            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>PlaceHolderAPI <color:#FFEBCD>подвязан!");
             Bukkit.getPluginManager().registerEvents(new PapiReload(), this);
         }
 
         Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setExecutor(new Executor(this));
         Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setTabCompleter(new Completer());
 
-        //公用事件
         Bukkit.getPluginManager().registerEvents(new ItemSpawn(), this);
         Bukkit.getPluginManager().registerEvents(new JoinAndQuit(), this);
 

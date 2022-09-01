@@ -15,7 +15,6 @@ import java.util.List;
 public class JedisUtils {
 
     private static JedisPool jedisPool;
-    public static boolean useRedis;
 
     public static Jedis getJedis(){
         return jedisPool.getResource();

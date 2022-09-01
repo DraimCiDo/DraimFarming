@@ -20,6 +20,7 @@ softdepend:
   - MMOCore
   - EcoSkills
   - RealisticSeasons
+  - Jobs
 
 commands:
   draimfarming:

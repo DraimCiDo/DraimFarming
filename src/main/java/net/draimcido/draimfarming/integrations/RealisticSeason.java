@@ -1,4 +1,4 @@
-package net.draimcido.draimfarming.hook;
+package net.draimcido.draimfarming.integrations;
 
 import me.casperge.realisticseasons.api.SeasonsAPI;
 import org.bukkit.World;
