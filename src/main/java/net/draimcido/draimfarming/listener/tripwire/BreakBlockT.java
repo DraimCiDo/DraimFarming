@@ -7,6 +7,7 @@ import net.draimcido.draimfarming.ConfigReader;
 import net.draimcido.draimfarming.Main;
 import net.draimcido.draimfarming.datamanager.CropManager;
 import net.draimcido.draimfarming.datamanager.PotManager;
+import net.draimcido.draimfarming.listener.JoinAndQuit;
 import net.draimcido.draimfarming.integrations.protection.Integration;
 import net.draimcido.draimfarming.objects.Crop;
 import net.draimcido.draimfarming.objects.SimpleLocation;
@@ -34,9 +35,12 @@ public class BreakBlockT implements Listener {
 
     @EventHandler
     public void onBreak(CustomBlockBreakEvent event){
+        long time = System.currentTimeMillis();
+        Player player = event.getPlayer();
+        if (time - (JoinAndQuit.coolDown.getOrDefault(player, time - 150)) < 150) return;
+        JoinAndQuit.coolDown.put(player, time);
         String namespacedId = event.getNamespacedID();
         if(namespacedId.contains("_stage_")){
-            Player player = event.getPlayer();
             Location location = event.getBlock().getLocation();
             for (Integration integration : ConfigReader.Config.integration)
                 if(!integration.canBreak(location, player)) return;

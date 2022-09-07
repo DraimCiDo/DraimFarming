@@ -3,7 +3,7 @@ package net.draimcido.draimfarming.integrations.skill;
 import com.gmail.nossr50.api.ExperienceAPI;
 import org.bukkit.entity.Player;
 
-public class mcMMO implements SkillXP {
+public class mcMMOIntegration implements SkillXP {
 
     @Override
     public void addXp(Player player, double amount) {

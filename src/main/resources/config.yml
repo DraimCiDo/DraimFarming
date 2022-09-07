@@ -1,5 +1,5 @@
 #Don't change
-config-version: '5'
+config-version: '6'
 
 
 config:
@@ -54,6 +54,7 @@ config:
     Towny: false
     Lands: false
     GriefPrevention: false
+    BentoBox: false
     #integration to add players' farming skill xp
     AureliumSkills: false
     mcMMO: false
@@ -69,10 +70,10 @@ config:
   # Mode 2:
   #      ● Online players' crops will grow
   # Mode 3:
-  #      ● Recommended Mode 1 + Mode 2
+  #      ● If you enable season, mode 3 is recommended (Mode 1 + Mode 2)
   # Mode 4:
-  #      ● Please disable season in this mode!
-  #      ● All the crops will grow
+  #      ● If you disable season, mode 4 is recommended
+  #      ● All the crops will grow, this is good for offline crops
   #      ● If season not disabled, your server would be lagging when there's a lot of data
   #      ● Crop data would be removed as soon as they are ripe when season disabled, so it would not cause lag!
   grow-mode: 3

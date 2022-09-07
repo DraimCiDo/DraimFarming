@@ -5,7 +5,7 @@ import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class Towny implements Integration{
+public class TownyIntegration implements Integration{
 
     @Override
     public boolean canBreak(Location location, Player player) {

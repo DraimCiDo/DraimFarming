@@ -3,7 +3,7 @@ package net.draimcido.draimfarming.integrations.protection;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class GriefPrevention implements Integration{
+public class GriefPreventionIntegration implements Integration{
 
     @Override
     public boolean canBreak(Location location, Player player) {

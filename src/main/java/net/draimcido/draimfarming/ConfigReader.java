@@ -171,7 +171,7 @@ public class ConfigReader {
             }
             if (config.getBoolean("config.integration.WorldGuard",false)){
                 if (Bukkit.getPluginManager().getPlugin("WorldGuard") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать WorldGuard!");
-                else {integration.add(new WorldGuard());hookMessage("WorldGuard");}
+                else {integration.add(new WorldGuardIntegration());hookMessage("WorldGuard");}
             }
             if (config.getBoolean("config.integration.Towny",false)){
                 if (Bukkit.getPluginManager().getPlugin("Towny") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать Towny!");
@@ -179,7 +179,7 @@ public class ConfigReader {
             }
             if (config.getBoolean("config.integration.Lands",false)){
                 if (Bukkit.getPluginManager().getPlugin("Lands") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать Lands!");
-                else {integration.add(new Lands());hookMessage("Lands");}
+                else {integration.add(new LandsIntegration());hookMessage("Lands");}
             }
             if (config.getBoolean("config.integration.GriefPrevention",false)){
                 if (Bukkit.getPluginManager().getPlugin("GriefPrevention") == null) Log.warn("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Не удалось иницилизировать GriefPrevention!");

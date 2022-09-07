@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class JobsReborn implements SkillXP{
+public class JobsRebornIntegration implements SkillXP{
 
     @Override
     public void addXp(Player player, double amount) {

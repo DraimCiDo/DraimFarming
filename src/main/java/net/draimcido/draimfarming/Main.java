@@ -64,7 +64,7 @@ public final class Main extends JavaPlugin {
         AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Запущен на " + Bukkit.getVersion());
 
         ConfigReader.reloadConfig();
-        if (!Objects.equals(ConfigReader.Config.version, "5")){
+        if (!Objects.equals(ConfigReader.Config.version, "6")){
             ConfigUtils.update();
         }
 

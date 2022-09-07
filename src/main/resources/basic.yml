@@ -7,7 +7,9 @@ basic:
   soil-detector: draimfarming:soil_detector
 
 
-
+# If you want watering-can has custom durability
+# Just set material to damageable items like wooden_sword
+# custom durability in itemsadder is compatible in DraimFarming
 water-can:
   watering_can_1:
     item: draimfarming:watering_can_1

@@ -6,7 +6,7 @@ import org.kingdoms.constants.group.Kingdom;
 import org.kingdoms.constants.land.Land;
 import org.kingdoms.constants.player.KingdomPlayer;
 
-public class KingdomsX implements Integration {
+public class KingdomsXIntegration implements Integration {
 
     @Override
     public boolean canBreak(Location location, Player player) {
