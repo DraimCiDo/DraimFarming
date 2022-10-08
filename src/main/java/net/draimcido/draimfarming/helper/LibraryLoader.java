@@ -22,7 +22,6 @@ public final class LibraryLoader {
     public static void loadAll(Object object) {
         loadAll(object.getClass());
     }
-
     public static void loadAll(Class<?> clazz) {
         MavenLibrary[] libs = clazz.getDeclaredAnnotationsByType(MavenLibrary.class);
         if (libs == null) {

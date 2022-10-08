@@ -29,7 +29,7 @@ public final class Log {
     }
 
     private Log() {
-        throw new UnsupportedOperationException("Этот класс не может быть создан!");
+        throw new UnsupportedOperationException("Этот класс не может быть инстанцирован");
     }
 
 }
