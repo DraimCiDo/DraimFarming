@@ -1,169 +1,100 @@
 package net.draimcido.draimfarming;
 
-import net.draimcido.draimfarming.commands.Completer;
-import net.draimcido.draimfarming.commands.Executor;
-import net.draimcido.draimfarming.datamanager.CropManager;
-import net.draimcido.draimfarming.datamanager.PotManager;
-import net.draimcido.draimfarming.datamanager.SeasonManager;
-import net.draimcido.draimfarming.datamanager.SprinklerManager;
-import net.draimcido.draimfarming.helper.LibraryLoader;
-import net.draimcido.draimfarming.integrations.Placeholders;
-import net.draimcido.draimfarming.listener.ItemSpawn;
-import net.draimcido.draimfarming.listener.JoinAndQuit;
-import net.draimcido.draimfarming.listener.PapiReload;
-import net.draimcido.draimfarming.listener.itemframe.BreakBlockI;
-import net.draimcido.draimfarming.listener.itemframe.BreakFurnitureI;
-import net.draimcido.draimfarming.listener.itemframe.InteractFurnitureI;
-import net.draimcido.draimfarming.listener.itemframe.RightClickI;
-import net.draimcido.draimfarming.listener.tripwire.BreakBlockT;
-import net.draimcido.draimfarming.listener.tripwire.BreakFurnitureT;
-import net.draimcido.draimfarming.listener.tripwire.InteractFurnitureT;
-import net.draimcido.draimfarming.listener.tripwire.RightClickT;
-import net.draimcido.draimfarming.timer.CropTimer;
-import net.draimcido.draimfarming.utils.AdventureManager;
-import net.draimcido.draimfarming.utils.ConfigUtils;
-import net.draimcido.draimfarming.utils.FileUtils;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import net.draimcido.draimfarming.managers.CropManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.draimcido.draimfarming.commands.PluginCommand;
+import net.draimcido.draimfarming.config.ConfigUtil;
+import net.draimcido.draimfarming.config.MainConfig;
+import net.draimcido.draimfarming.helper.LibraryLoader;
+import net.draimcido.draimfarming.integrations.papi.PlaceholderManager;
+import net.draimcido.draimfarming.utils.AdventureUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 public final class Main extends JavaPlugin {
 
     public static BukkitAudiences adventure;
     public static Main plugin;
+    public static ProtocolManager protocolManager;
 
-    private CropTimer cropTimer;
+    private PlaceholderManager placeholderManager;
     private CropManager cropManager;
-    private SprinklerManager sprinklerManager;
-    private SeasonManager seasonManager;
-    private PotManager potManager;
-    public static Placeholders placeholders;
-
-    public CropManager getCropManager() { return this.cropManager; }
-    public SprinklerManager getSprinklerManager() { return sprinklerManager; }
-    public SeasonManager getSeasonManager() { return seasonManager; }
-    public PotManager getPotManager() { return potManager; }
+    private PluginCommand pluginCommand;
 
     @Override
     public void onLoad(){
         plugin = this;
-        LibraryLoader.load("redis.clients","jedis","4.2.3","https://repo.maven.apache.org/maven2/");
-        LibraryLoader.load("org.apache.commons","commons-pool2","2.11.1","https://repo.maven.apache.org/maven2/");
         LibraryLoader.load("dev.dejvokep","boosted-yaml","1.3","https://repo.maven.apache.org/maven2/");
+        LibraryLoader.load("commons-io","commons-io","2.11.0","https://repo.maven.apache.org/maven2/");
     }
 
     @Override
     public void onEnable() {
 
         adventure = BukkitAudiences.create(plugin);
-        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Запущен на " + Bukkit.getVersion());
+        protocolManager = ProtocolLibrary.getProtocolManager();
+        AdventureUtil.consoleMessage("[DraimFarming] Запущен на <white>" + Bukkit.getVersion());
 
-        ConfigReader.reloadConfig();
-        if (!Objects.equals(ConfigReader.Config.version, "6")){
-            ConfigUtils.update();
+        if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
+            MainConfig.customPlugin = "itemsadder";
+            MainConfig.OraxenHook = false;
+            AdventureUtil.consoleMessage("[DraimFarming] Кастомизация предметов используется из <#BA55D3><u>ItemsAdder");
+        }
+        else if (Bukkit.getPluginManager().getPlugin("Oraxen") != null) {
+            MainConfig.customPlugin = "oraxen";
+            MainConfig.OraxenHook = true;
+            AdventureUtil.consoleMessage("[DraimFarming] Кастомизация предметов используется из <#6495ED><u>Oraxen");
+        }
+        else {
+            AdventureUtil.consoleMessage("<red>[DraimFarming] Вам нужно установить ItemsAdder либо Oraxen для работы плагина");
+            Bukkit.getPluginManager().disablePlugin(Main.plugin);
+            return;
         }
 
-        if(Bukkit.getPluginManager().getPlugin("PlaceHolderAPI") != null){
-            placeholders = new Placeholders();
-            placeholders.register();
-            Bukkit.getPluginManager().registerEvents(new PapiReload(), this);
+        ConfigUtil.reloadConfigs();
+
+        if (MainConfig.cropMode) AdventureUtil.consoleMessage("[DraimFarming] Режим урожая: Tripwire");
+        else AdventureUtil.consoleMessage("[DraimFarming] Режим урожая: ItemFrame");
+
+        this.pluginCommand = new PluginCommand();
+        Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setExecutor(pluginCommand);
+        Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setTabCompleter(pluginCommand);
+
+        this.cropManager = new CropManager();
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            this.placeholderManager = new PlaceholderManager();
         }
 
-        Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setExecutor(new Executor(this));
-        Objects.requireNonNull(Bukkit.getPluginCommand("draimfarming")).setTabCompleter(new Completer());
-
-        Bukkit.getPluginManager().registerEvents(new ItemSpawn(), this);
-        Bukkit.getPluginManager().registerEvents(new JoinAndQuit(), this);
-
-        ConfigReader.tryEnableJedis();
-        if (ConfigReader.Season.enable){
-            this.seasonManager = new SeasonManager();
-            this.seasonManager.loadData();
-        }
-
-        this.sprinklerManager = new SprinklerManager();
-        this.sprinklerManager.loadData();
-        this.potManager = new PotManager();
-        this.potManager.loadData();
-        this.cropTimer = new CropTimer();
-        if (ConfigReader.Config.cropMode.equalsIgnoreCase("item_frame")){
-            this.cropManager = new CropManager(true);
-            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Режим посевов: ItemFrame");
-            Bukkit.getPluginManager().registerEvents(new RightClickI(), this);
-            Bukkit.getPluginManager().registerEvents(new BreakBlockI(), this);
-            Bukkit.getPluginManager().registerEvents(new BreakFurnitureI(), this);
-            Bukkit.getPluginManager().registerEvents(new InteractFurnitureI(), this);
-        }else{
-            this.cropManager = new CropManager(false);
-            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Режим посевов: TripWire");
-            Bukkit.getPluginManager().registerEvents(new RightClickT(), this);
-            Bukkit.getPluginManager().registerEvents(new BreakBlockT(), this);
-            Bukkit.getPluginManager().registerEvents(new BreakFurnitureT(), this);
-            Bukkit.getPluginManager().registerEvents(new InteractFurnitureT(), this);
-            checkIAConfig();
-        }
-        this.cropManager.loadData();
-        AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Плагин успешно запущен!");
+        AdventureUtil.consoleMessage("[DraimFarming] Плагин успешно запущен!");
     }
 
     @Override
     public void onDisable() {
-        if (this.cropManager != null){
-            this.cropManager.cleanData();
-            this.cropManager.updateData();
-            this.cropManager.saveData();
-            this.cropManager = null;
-        }
-        if (this.sprinklerManager != null){
-            this.sprinklerManager.cleanData();
-            this.sprinklerManager.updateData();
-            this.sprinklerManager.saveData();
-            this.sprinklerManager = null;
-        }
-        if (this.potManager != null){
-            this.potManager.saveData();
-            this.potManager = null;
-        }
-        if (ConfigReader.Season.enable && !ConfigReader.Season.seasonChange && this.seasonManager != null){
-            this.seasonManager.saveData();
-            this.seasonManager = null;
-        }
-        if (placeholders != null){
-            placeholders.unregister();
-            placeholders = null;
-        }
-
-        getLogger().info("Создаётся бекап...");
-        FileUtils.backUpData();
-        getLogger().info("Готово.");
-
-        if (cropTimer != null) {
-            this.cropTimer.stopTimer(cropTimer.getTaskID());
-        }
         if (adventure != null) {
             adventure.close();
         }
-        if (plugin != null) {
-            plugin = null;
+        if (this.placeholderManager != null) {
+            this.placeholderManager.unload();
+        }
+        if (this.cropManager != null) {
+            this.cropManager.unload();
         }
     }
 
-    private void checkIAConfig(){
-        FileConfiguration fileConfiguration = Bukkit.getPluginManager().getPlugin("ItemsAdder").getConfig();
-        if (fileConfiguration.getBoolean("blocks.disable-REAL_WIRE")){
-            fileConfiguration.set("blocks.disable-REAL_WIRE", false);
-            try {
-                fileConfiguration.save(new File(Bukkit.getPluginManager().getPlugin("ItemsAdder").getDataFolder(), "config.yml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Мы заметили что функция \"disable-REAL_WIRE\" не стоит на false в ItemsAdder конфиге!");
-            AdventureManager.consoleMessage("<gradient:#0070B3:#A0EACF>[DraimFarming]</gradient> <color:#E1FFFF>Вам требуется перезапустить сервер - чтобы заработал конфиг :)");
-        }
+    public PlaceholderManager getPlaceholderManager() {
+        return placeholderManager;
+    }
+
+    public boolean hasPapi() {
+        return placeholderManager != null;
+    }
+
+    public CropManager getCropManager() {
+        return cropManager;
     }
 }

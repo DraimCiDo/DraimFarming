@@ -1,0 +1,132 @@
+# Название культуры
+# Ваши семена должны заканчиваться на "_seeds", а модель сцены - на "_stage_x".
+tomato:
+
+  quality-loots:
+    amount: 1~4
+    quality:
+      1: tomato
+      2: tomato_silver_star
+      3: tomato_golden_star
+
+  other-loots:
+    loot_1:
+      item: tomato_seeds
+      min_amount: 1
+      max_amount: 2
+      chance: 0.8
+    loot_2:
+      item: tomato
+      min_amount: 1
+      max_amount: 2
+      chance: 0.8
+
+  gigantic-crop:
+    block: gigantic_tomato
+    # furniture: gigantic_tomato (Если вы хотите, чтобы гигантский урожай стал мебелью)
+    chance: 0.01
+
+  harvest-actions:
+    messages:
+      - 'Здравствуйте, {player}! <u><click:open_url:xxx.xxx>Нажмите здесь, чтобы прочитать вики о DraimFarming'
+      - '<u>Этот плагин использует формат MiniMessage Format, посмотрите его здесь</u><click:open_url:https://docs.adventure.kyori.net/minimessage/format.html> <gold>[Нажми на меня]'
+    commands:
+      - 'say {player} собрал помидор! lol'
+    xp: 10
+    #skill-xp: 100
+
+  # Когда вы собираете урожай одним щелчком правой кнопки мыши, урожай возвращается на определенную стадию
+  return: tomato_stage_1
+
+  season:
+    - Spring
+
+  requirements:
+    condition_1:
+      # Система кондиционирования:
+      type: permission
+      # Режим: && / ||
+      mode: '&&'
+      value:
+        - crops.plant.tomato
+      # Сообщение, которое будет показано, если игрок не соответствует требованиям
+      message: 'У вас нет разрешения сажать это семя!'
+
+grape:
+  quality-loots:
+    amount: 3~4
+    quality:
+      1: grape
+      2: grape_silver_star
+      3: grape_golden_star
+  return: grape_stage_4
+  season:
+    - Spring
+    - Summer
+    - Autumn
+
+garlic:
+  quality-loots:
+    amount: 1~4
+    quality:
+      1: garlic
+      2: garlic_silver_star
+      3: garlic_golden_star
+  season:
+    - Autumn
+    - Winter
+
+redpacket:
+  other-loots:
+    loot_1:
+      item: redpacket
+      min_amount: 1
+      max_amount: 2
+      chance: 1
+    loot_2:
+      item: redpacket
+      min_amount: 1
+      max_amount: 4
+      chance: 0.8
+    loot_3:
+      item: redpacket
+      min_amount: 1
+      max_amount: 2
+      chance: 0.4
+
+cabbage:
+  quality-loots:
+    amount: 1~1
+    quality:
+      1: cabbage
+      2: cabbage_silver_star
+      3: cabbage_golden_star
+  season:
+    - Spring
+    - Summer
+  gigantic-crop:
+    block: gigantic_cabbage
+    chance: 0.02
+
+pepper:
+  quality-loots:
+    amount: 3~6
+    quality:
+      1: pepper
+      2: pepper_silver_star
+      3: pepper_golden_star
+  return: pepper_stage_3
+  season:
+    - Spring
+    - Autumn
+
+corn:
+  quality-loots:
+    amount: 1~3
+    quality:
+      1: corn
+      2: corn_silver_star
+      3: corn_golden_star
+  season:
+    - Summer
+    - Autumn

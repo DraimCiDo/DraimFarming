@@ -1,0 +1,15 @@
+sprinkler_1:
+  range: 1
+  max-water-storage: 5
+  3Ditem: draimfarming:sprinkler_1
+  2Ditem: draimfarming:sprinkler_1_item
+sprinkler_2:
+  range: 2
+  max-water-storage: 6
+  3Ditem: draimfarming:sprinkler_2
+  2Ditem: draimfarming:sprinkler_2_item
+sprinkler_3:
+  range: 3
+  max-water-storage: 7
+  3Ditem: draimfarming:sprinkler_3
+  2Ditem: draimfarming:sprinkler_3_item

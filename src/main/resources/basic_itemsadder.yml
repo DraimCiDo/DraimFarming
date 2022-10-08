@@ -1,0 +1,9 @@
+dry-pot: draimfarming:pot
+wet-pot: draimfarming:watered_pot
+greenhouse-glass: draimfarming:greenhouse_glass
+dead-crop: draimfarming:crop_stage_death
+soil-surveyor: draimfarming:soil_surveyor
+crow-fly: draimfarming:crow_fly
+crow-land: draimfarming:crow_land
+scarecrow: draimfarming:scarecrow
+water-effect: draimfarming:water_effect
